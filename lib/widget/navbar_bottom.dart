@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class BottomNavBar extends StatelessWidget{
-  final int selectedIndex;
+  final int selectedIndex ;
   final Function(int) onTap;
 
   const BottomNavBar({required this.selectedIndex, required this.onTap});
@@ -11,23 +11,30 @@ class BottomNavBar extends StatelessWidget{
   Widget build(BuildContext context) {
 
     return BottomNavigationBar(
-        currentIndex: selectedIndex,
-        onTap: onTap,
-        items: const [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Ana Sayfa'
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profil'
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: 'Ayarlar'
-          ),
-        ]
+      currentIndex: selectedIndex,
+      onTap: onTap,
+      selectedItemColor: Colors.blue,
+      unselectedItemColor: Colors.grey,
+      items: const [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.live_tv_outlined),
+          label: 'Diziler',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.movie),
+          label: 'Filmler',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.search),
+          label: 'Keşfetmek',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.person),
+          label: 'Profil',
+        ),
+      ],
     );
+
   }
 }
 

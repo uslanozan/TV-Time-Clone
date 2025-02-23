@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tvtime/pages/home.dart';
 import 'package:tvtime/pages/movies.dart';
 import 'package:tvtime/pages/profile.dart';
 
@@ -28,10 +29,11 @@ class _LoginState extends State<Login>{
 
   void _login() {
     // Başarılı
+    /*
     if (_formKey.currentState!.validate()) {
       print("Giriş başarılı: ${_emailController.text}");
 
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => Profile()),
       );
@@ -39,6 +41,8 @@ class _LoginState extends State<Login>{
       //TODO: Burada Firebase ve session uygulaması yapılacak
 
     }
+
+
     // Başarısız
     else{
       ScaffoldMessenger.of(context).showSnackBar(
@@ -49,6 +53,12 @@ class _LoginState extends State<Login>{
         ),
       );
     }
+    */
+    //TODO: ÜSTTEKİ KISMI AÇ
+    Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(builder: (context) => HomePage()),
+    );
   }
 
   @override
@@ -122,17 +132,6 @@ class _LoginState extends State<Login>{
                     );
                   } ,
                   child: const Text("Üye Ol")
-              ),
-
-              // Geçici movies buttonu
-              ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => MoviesPage()),
-                    );
-                  } ,
-                  child: const Text("Filmlere git")
               ),
             ],
           ),

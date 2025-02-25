@@ -23,9 +23,9 @@ class _ProfileState extends State<Profile>{
   Widget build(BuildContext context) {
     final themeManager = Provider.of<ThemeManager>(context);
 
-    _editProfile(){
-
-    }
+    _editProfile(){}
+    _showFavoriteSeries(){}
+    _showFavoriteMovies(){}
 
     String mod = "Mod Ayarı";
 
@@ -66,7 +66,7 @@ class _ProfileState extends State<Profile>{
                     backgroundColor: Colors.white, // Çerçeve efekti için
                     child: CircleAvatar(
                       radius: 30, // Gerçek profil fotoğrafı
-                      backgroundImage: AssetImage("assets/images/profile.jpg"),
+                      backgroundImage: AssetImage("assets/images/homelander_profile_picture.png"),
                     ),
                   ),
                   const SizedBox(width: 10), // Profil ile Column arasında boşluk
@@ -140,7 +140,40 @@ class _ProfileState extends State<Profile>{
               ],
             ),
           ],
+        ),
+        Container(
+          alignment: Alignment.centerLeft, // Butonu sola hizalar
+          child: ElevatedButton(
+            onPressed: _showFavoriteMovies,
+            child: Row(
+              mainAxisSize: MainAxisSize.min, // Buton boyutunu metin ve ikon kadar yapar
+              children: [
+                Text("Favori Filmler"), // Metin
+                SizedBox(width: 5), // Metin ile ikon arasında boşluk
+                Icon(Icons.arrow_forward_ios), // İkon
+              ],
+            ),
+          ),
+        ),
+        SizedBox(height: 10,),
+        Container(
+          alignment: Alignment.centerLeft, // Butonu sola hizalar
+          child: ElevatedButton(
+            onPressed: _showFavoriteSeries,
+            child: Row(
+              mainAxisSize: MainAxisSize.min, // Buton boyutunu metin ve ikon kadar yapar
+              children: [
+                Text("Favori Diziler"), // Metin
+                SizedBox(width: 5), // Metin ile ikon arasında boşluk
+                Icon(Icons.arrow_forward_ios), // İkon
+              ],
+            ),
+          ),
         )
+
+
+
+
       ],
     );
 

@@ -29,6 +29,43 @@ class _MoviesState extends State<MoviesPage> {
 
   @override
   Widget build(BuildContext context) {
+    return DefaultTabController(
+        length: 2,
+        child: Scaffold(
+        appBar: AppBar(
+          bottom: const TabBar(
+              tabs:[
+                Tab(child: const Text("İzleme Listesi")),
+                Tab(child: const Text("Yaklaşanlar")),
+              ]
+          ),
+        ),
+          body: Padding(
+            padding: const EdgeInsets.all(4.0), // Kenar boşlukları
+            child: GridView.builder(
+              itemCount: 21, // TODO: DB'den film sayısının çekilmesi lazım
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3, // Her satırda 3 öğe
+                crossAxisSpacing: 4, // Yatay boşluk
+                mainAxisSpacing: 4, // Dikey boşluk
+                childAspectRatio: 0.7, // Kartların yüksekliği
+              ),
+              itemBuilder: (context, index) {
+                return Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage("assets/images/recep.jpg"), // Doğru kullanım
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ));
+
+    /*
+    //TODO: Topbar olmayan hali
     return Padding(
       padding: const EdgeInsets.all(4.0), // Kenar boşlukları
       child: GridView.builder(
@@ -47,12 +84,13 @@ class _MoviesState extends State<MoviesPage> {
                 fit: BoxFit.cover,
               ),
             ),
-
           );
         },
       ),
     );
+     */
   }
+
 
 /*
   body: GridView.builder(

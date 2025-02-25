@@ -12,15 +12,12 @@ class HomePage extends StatefulWidget{
 
 class _HomePageState extends State<HomePage>{
   int _selectedIndex = 0;
-  String title = "Anasayfa";
+  //String title = "Anasayfa";
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-      ),
 
       body: IndexedStack(
         index: _selectedIndex,
@@ -35,17 +32,22 @@ class _HomePageState extends State<HomePage>{
         selectedIndex: _selectedIndex,
         onTap: (int index) {
           _selectedIndex = index;
+          /* Title kaldırıldı
           switch(index){
             case 0:
-              title = "Anasayfa";
+              title = "Diziler";
               break;
             case 1:
-              title = "Profil";
+              title = "Filmler";
               break;
             case 2:
               title = "Arama";
               break;
+            case 3:
+              title = "Profil";
+              break;
           }
+           */
           setState(() {
 
           });

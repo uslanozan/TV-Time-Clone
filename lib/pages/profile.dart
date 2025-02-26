@@ -141,7 +141,6 @@ class _ProfileState extends State<Profile>{
             ),
           ],
         ),
-
         Container(
           alignment: Alignment.centerLeft, // Butonu sola hizalar
           child: ElevatedButton(
@@ -156,8 +155,6 @@ class _ProfileState extends State<Profile>{
             ),
           ),
         ),
-
-
         SizedBox(height: 10,),
         Container(
           alignment: Alignment.centerLeft, // Butonu sola hizalar

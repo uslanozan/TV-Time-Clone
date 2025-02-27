@@ -18,6 +18,7 @@ class _LoginState extends State<Login>{
 
    var db = FirebaseFirestore.instance;
 
+
   // Form durum kontrolü için
   final _formKey = GlobalKey<FormState>();
 
@@ -37,12 +38,12 @@ class _LoginState extends State<Login>{
 
    Future<bool> checkUserCredentials(String email, String password) async {
      String hashedPassword = hashPassword(password); // Şifreyi hashle
-
+      print(db);
      try {
        QuerySnapshot querySnapshot = await FirebaseFirestore.instance
            .collection("User")
            .where("email", isEqualTo: email.trim()) // Email eşleşen kayıtları getir
-           .where("password", isEqualTo: hashedPassword.trim()) // Hashlenmiş şifreyi karşılaştır
+           .where("password", isEqualTo: hashedPassword) // Hashlenmiş şifreyi karşılaştır
            .get();
 
        if (querySnapshot.docs.isNotEmpty) {

@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 
 class Movie{
@@ -7,11 +5,12 @@ class Movie{
   final double imdb;
   final String bannerURL;
   final ElevatedButton buttonWatched;
-  final bool isWatched;
   final String movieExplanation;
+  final String star;
+  final int year;
 
-  Movie({required this.movieName, required this.imdb, required this.bannerURL
-  ,required this.buttonWatched, required this.isWatched, required this.movieExplanation});
+  Movie(this.movieName, this.imdb, this.bannerURL, this.buttonWatched,
+      this.movieExplanation, this.star, this.year);
 }
 
 class MoviesPage extends StatefulWidget {
@@ -29,6 +28,7 @@ class _MoviesState extends State<MoviesPage> {
 
   @override
   Widget build(BuildContext context) {
+    //TODO: TabBar Kullan
     return DefaultTabController(
         length: 2,
         child: Scaffold(

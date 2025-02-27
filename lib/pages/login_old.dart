@@ -1,22 +1,15 @@
-import 'dart:convert';
-import 'dart:ffi';
-import 'package:crypto/crypto.dart';
-
 import 'package:flutter/material.dart';
 import 'package:tvtime/pages/home.dart';
 import 'package:tvtime/pages/movies.dart';
 import 'package:tvtime/pages/profile.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Login extends StatefulWidget{
-  const Login({Key? key}) : super(key: key);
+class LoginOld extends StatefulWidget{
+  const LoginOld({Key? key}) : super(key: key);
 
-  _LoginState createState() => _LoginState();
+  _LoginStateOld createState() => _LoginStateOld();
 }
 
-class _LoginState extends State<Login>{
-
-   var db = FirebaseFirestore.instance;
+class _LoginStateOld extends State<LoginOld>{
 
   // Form durum kontrolü için
   final _formKey = GlobalKey<FormState>();
@@ -34,64 +27,42 @@ class _LoginState extends State<Login>{
     super.dispose();
   }
 
+  void _login() {
+    // Başarılı
 
-   Future<bool> checkUserCredentials(String email, String password) async {
-     String hashedPassword = hashPassword(password); // Şifreyi hashle
+    if (_formKey.currentState!.validate()) {
+      print("Giriş başarılı: ${_emailController.text}");
 
-     try {
-       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-           .collection("User")
-           .where("email", isEqualTo: email.trim()) // Email eşleşen kayıtları getir
-           .where("password", isEqualTo: hashedPassword.trim()) // Hashlenmiş şifreyi karşılaştır
-           .get();
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => Profile()),
+      );
 
-       if (querySnapshot.docs.isNotEmpty) {
-         print("Giriş başarılı!"); // Kullanıcı bulundu
-         return true;
-       } else {
-         print(email);
-         print(hashedPassword);
-         print("Hatalı email veya şifre!");
-         return false;
-       }
-     } catch (error) {
-       print("Hata: $error");
-       return false;
-     }
-   }
+      //TODO: Burada Firebase ve session uygulaması yapılacak
 
-  // SHA-256 Hash Fonksiyonu
-  String hashPassword(String password) {
-    var bytes = utf8.encode(password); // String'i byte array'e çevir
-    var digest = sha256.convert(bytes); // SHA-256 ile hashle
-    return digest.toString();
+    }
+
+
+    // Başarısız
+    else{
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Giriş yapılamadı! Lütfen tekrar deneyin.'),
+          duration: Duration(seconds: 2),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+
+    /*
+    //TODO: ÜSTTEKİ KISMI AÇ
+    Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(builder: (context) => HomePage()),
+    );
+
+     */
   }
-
-
-   void _login() async {
-     if (_formKey.currentState!.validate()) {
-       bool isValidUser = await checkUserCredentials(
-         _emailController.text,
-         _passwordController.text,
-       );
-
-       if (isValidUser) {
-         Navigator.pushReplacement(
-           context,
-           MaterialPageRoute(builder: (context) => Profile()),
-         );
-       } else {
-         ScaffoldMessenger.of(context).showSnackBar(
-           SnackBar(
-             content: Text('Hatalı email veya şifre!'),
-             duration: Duration(seconds: 2),
-             backgroundColor: Colors.red,
-           ),
-         );
-       }
-     }
-   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -141,6 +112,9 @@ class _LoginState extends State<Login>{
                   if(value == null || value.isEmpty){
                     return "Lütfen şifrenizi girin";
                   }
+                  else{
+                    return "Geçersiz şifre";
+                  }
                 },
               ),
 
@@ -148,16 +122,16 @@ class _LoginState extends State<Login>{
 
               // Giriş yap butonu
               ElevatedButton(
-                onPressed: _login,
-                child: const Text("Giriş Yap"),
+                  onPressed: _login,
+                  child: const Text("Giriş Yap"),
               ),
 
               // Üye ol butonu
               ElevatedButton(
                   onPressed: () {
                     Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Profile()),
+                        context,
+                        MaterialPageRoute(builder: (context) => Profile()),
                     );
                   } ,
                   child: const Text("Üye Ol")

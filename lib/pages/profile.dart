@@ -106,37 +106,48 @@ class _ProfileState extends State<Profile>{
             children: [
               Column(
                 children: [
-                  Text("1", style: TextStyle(fontSize: 16),),
-                  Text("Takip Edilenler",style: TextStyle(fontSize: 16),),
+                  Text("1"),
+                  Text("Takip Edilenler"),
                 ],
               ),
               SizedBox(width: 10,),
               Column(
                 children: [
-                  Text("2",style: TextStyle(fontSize: 16),),
-                  Text("Takipçiler",style: TextStyle(fontSize: 16),)
+                  Text("2"),
+                  Text("Takipçiler")
                 ],
+              ),
+              SizedBox(width: 10,),
+              Column(
+                children: [
+                  Text("3"),
+                  Text("Yorum")
+                ],
+              ),
 
-              ),
-              SizedBox(width: 10,),
-              Column(
-                children: [
-                  Text("3",style: TextStyle(fontSize: 16),),
-                  Text("Yorum",style: TextStyle(fontSize: 16),)
-                ],
+              SizedBox(height: 40),
 
-              ),
-              SizedBox(width: 10,),
-              Column(
+              Wrap(
+                //crossAxisAlignment: WrapCrossAlignment.start,
+                //alignment: WrapAlignment.start,
+                spacing: 10,
                 children: [
-                  Text(mod),
-                  Switch(
-                    value: themeManager.themeMode == ThemeMode.dark,
-                    onChanged: (value){
-                      themeManager.toggleTheme();
-                      //TODO: Stateful widget yapıp text'i değiştir.
-                      mod = "Karanlık Mod";
-                    },
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(mod),
+                      Material(
+                        child: Switch(
+                          value: themeManager.themeMode == ThemeMode.dark,
+                          onChanged: (value) {
+                            themeManager.toggleTheme();
+                            setState(() {
+                              mod = "Karanlık Mod";
+                            });
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

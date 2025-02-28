@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'package:crypto/crypto.dart';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tvtime/pages/home.dart';
 import 'package:tvtime/pages/movies.dart';
 import 'package:tvtime/pages/profile.dart';
@@ -35,6 +36,11 @@ class _LoginState extends State<Login>{
     super.dispose();
   }
 
+   Future<void> saveUserId(String userId) async {
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+     await prefs.setString("userId", userId);
+     print(userId);
+   }
 
    Future<bool> checkUserCredentials(String email, String password) async {
      String hashedPassword = hashPassword(password); // Şifreyi hashle
@@ -48,6 +54,7 @@ class _LoginState extends State<Login>{
 
        if (querySnapshot.docs.isNotEmpty) {
          print("Giriş başarılı!"); // Kullanıcı bulundu
+         saveUserId(querySnapshot.docs.first.id);
          return true;
        } else {
          print(email);
@@ -79,7 +86,7 @@ class _LoginState extends State<Login>{
        if (isValidUser) {
          Navigator.pushReplacement(
            context,
-           MaterialPageRoute(builder: (context) => Profile()),
+           MaterialPageRoute(builder: (context) => HomePage()),
          );
        } else {
          ScaffoldMessenger.of(context).showSnackBar(
@@ -156,9 +163,9 @@ class _LoginState extends State<Login>{
               // Üye ol butonu
               ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
+                    Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => Profile()),
+                      MaterialPageRoute(builder: (context) => HomePage()),
                     );
                   } ,
                   child: const Text("Üye Ol")

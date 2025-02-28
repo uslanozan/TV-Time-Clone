@@ -8,6 +8,7 @@ import 'package:tvtime/pages/home.dart';
 import 'package:tvtime/pages/movies.dart';
 import 'package:tvtime/pages/profile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:tvtime/pages/signup.dart';
 
 class Login extends StatefulWidget{
   const Login({Key? key}) : super(key: key);
@@ -163,9 +164,9 @@ class _LoginState extends State<Login>{
               // Üye ol butonu
               ElevatedButton(
                   onPressed: () {
-                    Navigator.pushReplacement(
+                    Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => HomePage()),
+                      MaterialPageRoute(builder: (context) => Signup()),
                     );
                   } ,
                   child: const Text("Üye Ol")

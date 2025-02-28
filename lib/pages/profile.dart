@@ -161,6 +161,21 @@ class _ProfileState extends State<Profile>{
               child: Row(
                 mainAxisSize: MainAxisSize.min, // Buton boyutunu metin ve ikon kadar yapar
                 children: [
+                  Text("İzlediğim Filmler"), // Metin
+                  SizedBox(width: 5), // Metin ile ikon arasında boşluk
+                  Icon(Icons.arrow_forward_ios), // İkon
+                ],
+              ),
+            ),
+          ),
+
+          Container(
+            alignment: Alignment.centerLeft, // Butonu sola hizalar
+            child: ElevatedButton(
+              onPressed: _showFavoriteMovies,
+              child: Row(
+                mainAxisSize: MainAxisSize.min, // Buton boyutunu metin ve ikon kadar yapar
+                children: [
                   Text("Favori Filmler"), // Metin
                   SizedBox(width: 5), // Metin ile ikon arasında boşluk
                   Icon(Icons.arrow_forward_ios), // İkon
@@ -169,7 +184,22 @@ class _ProfileState extends State<Profile>{
             ),
           ),
 
-          SizedBox(height: 10,),
+          SizedBox(height: 30,),
+
+          Container(
+            alignment: Alignment.centerLeft, // Butonu sola hizalar
+            child: ElevatedButton(
+              onPressed: _showFavoriteSeries,
+              child: Row(
+                mainAxisSize: MainAxisSize.min, // Buton boyutunu metin ve ikon kadar yapar
+                children: [
+                  Text("İzlediğim Diziler"), // Metin
+                  SizedBox(width: 5), // Metin ile ikon arasında boşluk
+                  Icon(Icons.arrow_forward_ios), // İkon
+                ],
+              ),
+            ),
+          ),
 
           Container(
             alignment: Alignment.centerLeft, // Butonu sola hizalar
@@ -184,7 +214,7 @@ class _ProfileState extends State<Profile>{
                 ],
               ),
             ),
-          )
+          ),
         ],
       ),
 

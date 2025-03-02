@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'series_details.dart';
 
@@ -17,19 +18,66 @@ class _SeriesState extends State<SeriesPage> {
   void initState() {
     super.initState();
     fetchSeries(); // Automatically fetch data when the screen loads
+    /* TODO: BURASININ ÇÖZÜLMESİ GEREK LİSTEDEN ÇIKARILDIĞINDA GÜNCELLENMİYOR
+    setState(() {
+
+    });
+     */
   }
 
   Future<void> fetchSeries() async {
-    var snapshot = await FirebaseFirestore.instance.collection("Series").get();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userId = prefs.getString("userId");
 
-    setState(() {
-      series = snapshot.docs.map((doc) {
-        return {
-          "name": doc.id,  // Document ID (Series Name)
-          "bannerURL": doc["bannerURL"]?.toString() ?? "", // Ensure bannerURL is a String
-        };
-      }).toList();
-    });
+    if(userId==null){
+      print("Kullanıcı oturumu açık değil");
+      return;
+    }
+
+    try{
+      DocumentSnapshot userSnapshot =
+          await FirebaseFirestore.instance.collection("User").doc(userId).get();
+
+      if(!userSnapshot.exists){
+        print("Kullanıcı bulunamadı");
+        return;
+      }
+
+      Map<String, dynamic>? userData = userSnapshot.data() as Map<String, dynamic>?;
+
+      if(userData == null || !userData.containsKey("watchLaterSeries")){
+        print("watchLaterSeries alanı bulunamadı");
+        return;
+      }
+
+      List<dynamic> watchLaterSeries = userData["watchLaterSeries"];
+
+      if(watchLaterSeries.isEmpty){
+        print("watchLaterSeries listesi boş");
+        return;
+      }
+
+      var snapshot = await FirebaseFirestore.instance
+      .collection("Series")
+      .where(FieldPath.documentId, whereIn: watchLaterSeries)
+      .get();
+
+      setState(() {
+        series = snapshot.docs.map((doc) {
+          return {
+            "name": doc.id,  // Document ID (Series Name)
+            "bannerURL": doc["bannerURL"]?.toString() ?? "", // Ensure bannerURL is a String
+          };
+        }).toList();
+      });
+
+    }catch (error){
+      print("Hata oluştu: $error");
+    }
+
+    /*
+
+     */
   }
 
 
@@ -47,7 +95,15 @@ class _SeriesState extends State<SeriesPage> {
                 ]
             ),
           ),
-          body: Padding(
+          body: series.isEmpty ?
+              Container(
+                alignment: Alignment.center,
+                child: Text("İzleme Listesinde Hiç Dizi Yok",
+                  style: TextStyle(color: Colors.yellow),
+                ),
+              )
+              :
+          Padding(
             padding: const EdgeInsets.all(4.0), // Kenar boşlukları
             child: GridView.builder(
               itemCount: series.length, // TODO: DB'den dizi sayısının çekilmesi lazım
@@ -67,7 +123,9 @@ class _SeriesState extends State<SeriesPage> {
                           seriesId: series[index]["name"]!,
                           bannerURL: series[index]["bannerURL"]!,),
                       ),
-                    );
+                    ).then((_) {//TODO: DETAYLARA GİDİP GELİNCE GÜNCELLENMİYOR
+                      setState(() {}); // Geri dönünce listeyi güncelle
+                    });
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -83,8 +141,5 @@ class _SeriesState extends State<SeriesPage> {
             ),
           ),
         ));
-
   }
-
-
 }

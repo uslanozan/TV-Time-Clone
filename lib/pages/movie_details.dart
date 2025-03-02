@@ -389,6 +389,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                               String? userId = await getUserId();
                               if (userId != null) {
                                 await _removeMovieFromWatched(userId);
+                                //TODO: ÇALIŞMIYOR
                                 setState(() {
                                   defaultDeleteButtonColor = Colors.red;
                                   isFavorite = false;

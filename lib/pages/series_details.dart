@@ -421,6 +421,7 @@ class _SeriesDetailScreenState extends State<SeriesDetailScreen> {
 
                       if (watchLaterSeries.contains(widget.seriesId)) {
                         await _removeWatchLaterSeriesList(userId);
+                        //TODO: ÇALIŞMIYOR
                         setState(() {
                           defaultAddLaterText = "İzleme Listesine Ekle";
                           defaultAddLaterList = Colors.yellow;

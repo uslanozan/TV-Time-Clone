@@ -124,7 +124,11 @@ class _SeriesState extends State<SeriesPage> {
                           bannerURL: series[index]["bannerURL"]!,),
                       ),
                     ).then((_) {//TODO: DETAYLARA GİDİP GELİNCE GÜNCELLENMİYOR
-                      setState(() {}); // Geri dönünce listeyi güncelle
+                      setState(() async {
+                        await fetchSeries();
+                        print(" güncellendi");
+
+                      }); // Geri dönünce listeyi güncelle
                     });
                   },
                   child: Container(

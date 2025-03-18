@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:tvtime/pages/movie_details.dart';
+import 'package:tvtime/pages/series_details.dart';
 
 class SearchPage extends StatefulWidget {
   @override
@@ -40,6 +42,32 @@ class _SearchPageState extends State<SearchPage> {
       _isLoading = false;
     });
   }
+
+  Future<String?> fetchMovieBannerURL(String movieId) async {
+    try {
+      var doc = await FirebaseFirestore.instance.collection("movies").doc(movieId).get();
+      if (doc.exists) {
+        return doc.data()?["bannerURL"];
+      }
+    } catch (e) {
+      print("Hata: $e");
+    }
+    return null;
+  }
+
+
+  Future<String?> fetchSeriesBannerURL(String seriesId) async {
+    try {
+      var doc = await FirebaseFirestore.instance.collection("series").doc(seriesId).get();
+      if (doc.exists) {
+        return doc.data()?["bannerURL"];
+      }
+    } catch (e) {
+      print("Hata: $e");
+    }
+    return null;
+  }
+
 
   void _filterSearch(String query) {
     setState(() {
@@ -85,6 +113,36 @@ class _SearchPageState extends State<SearchPage> {
                     item["type"] == "film" ? Icons.movie : Icons.tv, // Film ve dizi için ikon
                     color: item["type"] == "film" ? Colors.blue : Colors.red,
                   ),
+                  onTap: () async {
+                    String? bannerURL;
+
+                    if (item["type"] == "film") {
+                      bannerURL = await fetchMovieBannerURL(item["id"]); // Filmler için çek
+                    } else {
+                      bannerURL = await fetchSeriesBannerURL(item["id"]); // Diziler için çek
+                    }
+
+                    if (bannerURL != null) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => item["type"] == "film"
+                              ? MovieDetailScreen(
+                            movieId: item["name"]!,
+                            bannerURL: bannerURL!,
+                          )
+                              : SeriesDetailScreen(
+                            seriesId: item["name"]!,
+                            bannerURL: bannerURL!,
+                          ),
+                        ),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Banner URL bulunamadı!")),
+                      );
+                    }
+                  },
                 );
               },
             ),

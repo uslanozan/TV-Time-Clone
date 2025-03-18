@@ -124,7 +124,10 @@ class _MoviesState extends State<MoviesPage> {
                           bannerURL: movies[index]["bannerURL"]!,),
                       ),
                     ).then((_) {  //TODO: DETAYLARA GİDİP GELİNCE GÜNCELLENMİYOR
-                      setState(() {}); // Geri dönünce listeyi güncelle
+                      setState(() async {
+                        await fetchMovies();
+                        print(" güncellendi");
+                      }); // Geri dönünce listeyi güncelle
                     });
                   },
                   child: Container(
